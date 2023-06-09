@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"time"
 	"github.com/gorilla/mux"
+	"github.com/Rade1210/go_microservices/details"
 )
 
 func healthHandler(w http.ResponseWriter, r *http.Request) {
@@ -27,6 +28,18 @@ func rootHandler(w http.ResponseWriter, r *http.Request) {
 
 func detailsHandler(w http.ResponseWriter, r *http.Request) {
 	log.Println("Fetching the details")
+	hostname, err := details.GetHostname()
+	if err != nil {
+		panic(err)
+	}
+	IP, _ := details.GetIP()
+	fmt.Println(hostname, IP)
+	response := map[string]string{
+		"hostname": hostname,
+		"ip" : IP.String(),
+		
+	}
+	json.NewEncoder(w).Encode(response)
 }
 
 func main() {
@@ -34,5 +47,6 @@ func main() {
     r.HandleFunc("/health", healthHandler)
 	r.HandleFunc("/", rootHandler)
 	r.HandleFunc("/details", detailsHandler)
+	log.Println("Server has started")
 	log.Fatal(http.ListenAndServe(":80", r))
 }
