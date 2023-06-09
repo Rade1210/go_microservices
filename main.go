@@ -27,7 +27,6 @@ func rootHandler(w http.ResponseWriter, r *http.Request) {
 
 func detailsHandler(w http.ResponseWriter, r *http.Request) {
 	log.Println("Fetching the details")
-	hostname := 
 }
 
 func main() {
